@@ -1,19 +1,26 @@
-//define input as the txt file
-const input = document.querySelector('input[type="file"]')
-//add a event listener so that when there is a change to the input something happens as shown
-input.addEventListener('change', function(e){
-    console.log(input.files);
-    const reader = new FileReader();
-    //read the files as text
-    reader.readAsText(input.files[0]);
-    //what it should do once a file is loaded
-    reader.onload=function(){
-    console.log(reader.result);
-    //we are now making it look better by making new lines and adding commas
-    const lines = reader.result.split('/n').map(function (line){
-        return line.split(',')
-    })
-    //display the data onto the html site
-    document.getElementById('showdata').innerHTML=reader.result;
-    }
-}, false)
+window.onload = () => {
+const fileInput = document.getElementById('fileInput');
+    //add the event listener for when there is a change
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  //add the file reader
+  const reader = new FileReader();
+
+  //what to do when a file is loaded
+  reader.onload = () => {
+    const data = reader.result;
+    //so now whenever in the .txt file there is a '.' after a word a new line is made
+    const lines = data.split('.');
+    //ok so this removes any leading or trailing white space from each line
+    //and the join() method brings the lines together with <br> which makes new lines.
+    const array = lines.map(line => line.trim()).join('<br>');
+    //log the array to the console
+    console.log(array);
+    //display the .txt file which is now an array onto the website from the html side
+    document.getElementById('showdata').innerHTML= array
+  };
+
+  //read's the content as a string for the html
+  reader.readAsText(file);
+})
+};
